@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Domain.Entities
 {
@@ -13,7 +14,9 @@ namespace Domain.Entities
 
         public int MedicoID { get; set; }
 
-        public DateTime FechaHora { get; set; }
+        public string Fecha { get; set; }
+
+        public string Hora { get; set; }
 
         public string Motivo { get; set; }
 

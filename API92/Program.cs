@@ -14,10 +14,11 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlSer
     builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configurar servicios...
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
-});
+//builder.Services.AddControllers().AddJsonOptions(options =>
+//{
+//    options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+//});
+
 
 
 //inyección de dependencias

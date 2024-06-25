@@ -34,7 +34,7 @@ namespace API92.Services
             try
             {
 
-                Citas result = (await _context.Database.GetDbConnection().QueryAsync<Citas>("spPostCrearCitas", new{ i.PacienteID, i.MedicoID, i.FechaHora, i.Motivo, i.Notas, i.Estatus }, commandType: CommandType.StoredProcedure)).FirstOrDefault();
+                Citas result = (await _context.Database.GetDbConnection().QueryAsync<Citas>("spPostCrearCitas", new{ i.PacienteID, i.MedicoID, i.Fecha, i.Hora, i.Motivo, i.Notas, i.Estatus }, commandType: CommandType.StoredProcedure)).FirstOrDefault();
 
                 return new Response<Citas>(result);
 
@@ -51,7 +51,7 @@ namespace API92.Services
             try
             {
 
-                Citas result = (await _context.Database.GetDbConnection().QueryAsync<Citas>("spPutEditarCitas", new {i.ID_Cita, i.PacienteID, i.MedicoID, i.FechaHora, i.Motivo, i.Notas, i.Estatus }, commandType: CommandType.StoredProcedure)).FirstOrDefault();
+                Citas result = (await _context.Database.GetDbConnection().QueryAsync<Citas>("spPutEditarCitas", new {i.ID_Cita, i.PacienteID, i.MedicoID, i.Fecha, i.Hora, i.Motivo, i.Notas, i.Estatus }, commandType: CommandType.StoredProcedure)).FirstOrDefault();
 
                 return new Response<Citas>(result);
 

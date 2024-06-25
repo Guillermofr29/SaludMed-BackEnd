@@ -14,8 +14,8 @@ namespace Domain.Entities
     {
         public int ID_Cita { get; set; }
 
-        [JsonConverter(typeof(DateTimeConverter))]
-        public DateTime FechaHora { get; set; }
+        public string FechaHora { get; set; }
+
         public string NombrePaciente { get; set; }
     }
 }
