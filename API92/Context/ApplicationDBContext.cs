@@ -9,7 +9,7 @@ namespace API92.Context
 
         public DbSet<Pacientes> Pacientes { get; set; }
 
-        //public DbSet<Medicos> Medicos { get; set; }
+        public DbSet<Medicos> Medicos { get; set; }
 
         public DbSet<Citas> Citas { get; set; }
 
