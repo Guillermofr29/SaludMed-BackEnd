@@ -25,8 +25,9 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlSer
 //builder.Services.AddTransient<IUsuarioServices, UsuarioServices>();
 //builder.Services.AddTransient<IAutorServices, AutorServices>();
 builder.Services.AddTransient<IPacienteServices, PacienteServices>();
-//builder.Services.AddTransient<IMedicoServices, MedicoServices>();
+builder.Services.AddTransient<IMedicoServices, MedicoServices>();
 builder.Services.AddTransient<ICitaServices, CitaServices>();
+builder.Services.AddTransient<IMotivoCitaServices, MotivoCitaServices>();
 //builder.Services.AddTransient<IRecetaServices, RecetaServices>();
 
 

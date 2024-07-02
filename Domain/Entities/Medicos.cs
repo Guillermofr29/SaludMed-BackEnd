@@ -28,7 +28,9 @@ namespace Domain.Entities
 
         public string Correo { get; set; }
 
-        public string Contraseña { get; set; }
+        public string Contraseña { get; set; } 
+
+        public int RolID { get; set; }
 
     }
 }

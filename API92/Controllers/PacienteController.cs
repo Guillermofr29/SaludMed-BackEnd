@@ -1,8 +1,10 @@
 ﻿using API92.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace API92.Controllers
@@ -19,11 +21,11 @@ namespace API92.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPacientes()
+        public async Task<IActionResult> GetPacientes(int medicoID)
         {
             try
             {
-                var result = await _pacienteServices.GetPacientes();
+                var result = await _pacienteServices.GetPacientes(medicoID);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -31,6 +33,7 @@ namespace API92.Controllers
                 return BadRequest("Error al obtener los pacientes: " + ex.Message);
             }
         }
+
 
         [HttpGet("PorNombre")]
         public async Task<IActionResult> GetPacientesPorNombre([FromQuery] string nombre, [FromQuery] string apellido)
@@ -47,11 +50,11 @@ namespace API92.Controllers
         }
 
         [HttpGet("TotalPacientes")]
-        public async Task<IActionResult> GetTotalPacientes()
+        public async Task<IActionResult> GetTotalPacientes(int medicoID)
         {
             try
             {
-                var result = await _pacienteServices.GetTotalPacientes();
+                var result = await _pacienteServices.GetTotalPacientes(medicoID);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -61,11 +64,11 @@ namespace API92.Controllers
         }
 
         [HttpGet("ContarGeneroPacientes")]
-        public async Task<IActionResult> ContarGeneroPacientes()
+        public async Task<IActionResult> ContarGeneroPacientes(int medicoID)
         {
             try
             {
-                var result = await _pacienteServices.ContarGeneroPacientes();
+                var result = await _pacienteServices.ContarGeneroPacientes(medicoID);
                 return Ok(new {mujeres = result.mujeres, hombres = result.hombres});
             }
             catch (Exception ex)
@@ -128,6 +131,20 @@ namespace API92.Controllers
             catch (Exception ex)
             {
                 return BadRequest("Error al obtener el paciente por ID: " + ex.Message);
+            }
+        }
+
+        [HttpGet("PacientesMasRecurrentes")]
+        public async Task<IActionResult> GetPacientesMasRecurrentes(int medicoID, int rolID)
+        {
+            try
+            {
+                var result = await _pacienteServices.GetPacientesMasRecurrentes(medicoID, rolID);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener los pacientes mas recurrentes: " + ex.Message);
             }
         }
 

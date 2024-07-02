@@ -13,30 +13,32 @@ namespace API92.Context
 
         public DbSet<Citas> Citas { get; set; }
 
+        public DbSet<MotivoCita> MotivosCita { get; set; }
+
         //public DbSet<Recetas> Recetas { get; set; }
 
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
-            //Insertar en la tabla usuario
-          //  modelBuilder.Entity<Usuario>().HasData(
-            //    new Usuario
-              //  {
-                //    PkUsuario = 1,
-                  //  Nombre = "Andy",
-                    //UserName = "Masquerade",
-                    //Password = "12345",
-                    //FkRol = 1
-                //});
+        //Insertar en la tabla usuario
+        //  modelBuilder.Entity<Usuario>().HasData(
+        //    new Usuario
+        //  {
+        //    PkUsuario = 1,
+        //  Nombre = "Andy",
+        //UserName = "Masquerade",
+        //Password = "12345",
+        //FkRol = 1
+        //});
 
-            //Insertar en la tabla rol
-            //modelBuilder.Entity<Rol>().HasData(
-              //  new Rol
-                //{
-                  //  PkRol = 1,
-                    //Nombre = "sa"
-                //});
-       // }
+        //Insertar en la tabla rol
+        //modelBuilder.Entity<Rol>().HasData(
+        //  new Rol
+        //{
+        //  PkRol = 1,
+        //Nombre = "sa"
+        //});
+        // }
 
 
         //ASP .net core web api

@@ -16,11 +16,11 @@ namespace API92.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCitas()
+        public async Task<IActionResult> GetCitas(int medicoID)
         {
             try
             {
-                var result = await _citasServices.GetCitas();
+                var result = await _citasServices.GetCitas(medicoID);
                 return Ok(result);
 
             }
@@ -75,11 +75,11 @@ namespace API92.Controllers
         }
 
         [HttpGet("TotalCitas")]
-        public async Task<IActionResult> GetTotalCitas()
+        public async Task<IActionResult> GetTotalCitas(int medicoID)
         {
             try
             {
-                var result = await _citasServices.GetTotalCitas();
+                var result = await _citasServices.GetTotalCitas(medicoID);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -89,11 +89,11 @@ namespace API92.Controllers
         }
 
         [HttpGet("CitasPendientes")]
-        public async Task<IActionResult> GetCitasPendientes()
+        public async Task<IActionResult> GetCitasPendientes(int medicoID)
         {
             try
             {
-                var result = await _citasServices.GetCitasPendientes();
+                var result = await _citasServices.GetCitasPendientes(medicoID);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -103,11 +103,11 @@ namespace API92.Controllers
         }
 
         [HttpGet("UltimasCincoCitas")]
-        public async Task<IActionResult> GetUltimasCincoCitas()
+        public async Task<IActionResult> GetUltimasCincoCitas(int medicoID)
         {
             try
             {
-                var result = await _citasServices.GetUltimasCincoCitas();
+                var result = await _citasServices.GetUltimasCincoCitas(medicoID);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -116,31 +116,59 @@ namespace API92.Controllers
             }
         }
 
-        [HttpGet("CincoMedicamentosMasRecetados")]
-        public async Task<IActionResult> GetCincoMedicamentosMasRecetados()
-        {
-            try
-            {
-                var result = await _citasServices.GetCincoMedicamentosMasRecetados();
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Error al obtener los medicamentos más recetados: " + ex.Message);
-            }
-        }
+        //[HttpGet("CincoMedicamentosMasRecetados")]
+        //public async Task<IActionResult> GetCincoMedicamentosMasRecetados()
+        //{
+        //    try
+        //    {
+        //        var result = await _citasServices.GetCincoMedicamentosMasRecetados();
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest("Error al obtener los medicamentos más recetados: " + ex.Message);
+        //    }
+        //}
 
         [HttpGet("CincoMotivosConsultaMasComunes")]
-        public async Task<IActionResult> GetCincoMotivosConsultaMasComunes()
+        public async Task<IActionResult> GetCincoMotivosConsultaMasComunes(int medicoID)
         {
             try
             {
-                var result = await _citasServices.GetCincoMotivosConsultaMasComunes();
+                var result = await _citasServices.GetCincoMotivosConsultaMasComunes(medicoID);
                 return Ok(result);
             }
             catch (Exception ex)
             {
                 return BadRequest("Error al obtener los motivos de consulta más comunes: " + ex.Message);
+            }
+        }
+
+        [HttpGet("ProximasCitas")]
+        public async Task<IActionResult> GetProximasCitas(int medicoID, int rolID)
+        {
+            try
+            {
+                var result = await _citasServices.GetProximasCitas(medicoID, rolID);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener los motivos de consulta más comunes: " + ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCitaPorID(int id)
+        {
+            try
+            {
+                var result = await _citasServices.GetCitaPorID(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener la cita por ID: " + ex.Message);
             }
         }
 

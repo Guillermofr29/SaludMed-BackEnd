@@ -26,9 +26,9 @@ public class AuthController : ControllerBase
             return Unauthorized();
         }
 
-        // Aquí generarías y retornarías un token JWT en lugar de solo el ID
-        return Ok(new { Id = medico.ID_Medico });
+        return Ok(new { Id = medico.ID_Medico, ClincaID = medico.ClinicaID , Nombre = medico.Nombre, Apellido = medico.Apellido, Especialidad = medico.Especialidad, CedulaProfesional = medico.CedulaProfesional, Telefono = medico.Telefono, Correo = medico.Correo, RolID = medico.RolID });
     }
+
 }
 
 public class LoginRequest

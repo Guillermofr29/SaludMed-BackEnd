@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace API92.Services
 {
@@ -19,16 +20,21 @@ namespace API92.Services
             _context = context;
         }
 
-        public async Task<Response<List<Pacientes>>> GetPacientes()
+        public async Task<Response<List<Pacientes>>> GetPacientes(int medicoID)
         {
             try
             {
-                List<Pacientes> response = (await _context.Database.GetDbConnection().QueryAsync<Pacientes>("spGetAllPacientes", commandType: CommandType.StoredProcedure)).ToList();
+                var parameters = new { MedicoID = medicoID };
+                List<Pacientes> response = (await _context.Database.GetDbConnection().QueryAsync<Pacientes>(
+                    "spGetAllPacientes",
+                    parameters,
+                    commandType: CommandType.StoredProcedure)).ToList();
+
                 return new Response<List<Pacientes>>(response);
             }
             catch (Exception ex)
             {
-                throw new Exception("Sucedio un error: " + ex.Message, ex);
+                throw new Exception("Error al obtener los pacientes: " + ex.Message, ex);
             }
         }
 
@@ -36,7 +42,7 @@ namespace API92.Services
         {
             try
             {
-                Pacientes result = (await _context.Database.GetDbConnection().QueryAsync<Pacientes>("spPostCrearPaciente", new { i.Nombre, i.Apellido, i.Sexo, i.Edad, i.Peso, i.Estatura, i.Telefono, i.Domicilio, i.Correo }, commandType: CommandType.StoredProcedure)).FirstOrDefault();
+                Pacientes result = (await _context.Database.GetDbConnection().QueryAsync<Pacientes>("spPostCrearPaciente", new { i.Nombre, i.Apellido, i.Sexo, i.Edad, i.Peso, i.Estatura, i.Telefono, i.Domicilio, i.Correo, i.MedicoID }, commandType: CommandType.StoredProcedure)).FirstOrDefault();
                 return new Response<Pacientes>(result);
             }
             catch (Exception ex)
@@ -49,7 +55,7 @@ namespace API92.Services
         {
             try
             {
-                Pacientes result = (await _context.Database.GetDbConnection().QueryAsync<Pacientes>("spPutEditarPaciente", new { i.ID_Paciente, i.Nombre, i.Apellido, i.Sexo, i.Edad, i.Peso, i.Estatura, i.Telefono, i.Domicilio, i.Correo }, commandType: CommandType.StoredProcedure)).FirstOrDefault();
+                Pacientes result = (await _context.Database.GetDbConnection().QueryAsync<Pacientes>("spPutEditarPaciente", new { i.ID_Paciente, i.Nombre, i.Apellido, i.Sexo, i.Edad, i.Peso, i.Estatura, i.Telefono, i.Domicilio, i.Correo, i.MedicoID }, commandType: CommandType.StoredProcedure)).FirstOrDefault();
                 return new Response<Pacientes>(result);
             }
             catch (Exception ex)
@@ -74,11 +80,12 @@ namespace API92.Services
             }
         }
 
-        public async Task<Response<int>> GetTotalPacientes()
+        public async Task<Response<int>> GetTotalPacientes(int medicoID)
         {
             try
             {
-                int totalPacientes = (await _context.Database.GetDbConnection().QueryAsync<int>("spGetTotalPacientes", commandType: CommandType.StoredProcedure)).FirstOrDefault();
+                var parameters = new { MedicoID = medicoID };
+                int totalPacientes = (await _context.Database.GetDbConnection().QueryAsync<int>("spGetTotalPacientes", parameters,commandType: CommandType.StoredProcedure)).FirstOrDefault();
                 return new Response<int>(totalPacientes);
             }
             catch (Exception ex)
@@ -87,11 +94,12 @@ namespace API92.Services
             }
         }
 
-        public async Task<(int mujeres, int hombres)> ContarGeneroPacientes()
+        public async Task<(int mujeres, int hombres)> ContarGeneroPacientes(int medicoID)
         {
             try
             {
-                var result = await _context.Database.GetDbConnection().QueryFirstOrDefaultAsync<(int, int)>("spGetContarGeneroPacientes", commandType: CommandType.StoredProcedure);
+                var parameters = new { MedicoID = medicoID };
+                var result = await _context.Database.GetDbConnection().QueryFirstOrDefaultAsync<(int, int)>("spGetContarGeneroPacientes", parameters, commandType: CommandType.StoredProcedure);
                 return result;
             }
             catch (Exception ex)
@@ -117,17 +125,17 @@ namespace API92.Services
             }
         }
 
-        public async Task<Response<Pacientes>> GetPacientePorID(int id)
+        public async Task<Response<PacienteNombre>> GetPacientePorID(int id)
         {
             try
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("ID_Paciente", id, DbType.Int32);
 
-                Pacientes result = (await _context.Database.GetDbConnection().QueryAsync<Pacientes>(
+                PacienteNombre result = (await _context.Database.GetDbConnection().QueryAsync<PacienteNombre>(
                     "spGetPacientePorID", parameters, commandType: CommandType.StoredProcedure)).FirstOrDefault();
 
-                return new Response<Pacientes>(result);
+                return new Response<PacienteNombre>(result);
             }
             catch (Exception ex)
             {
@@ -135,5 +143,52 @@ namespace API92.Services
             }
         }
 
+        public async Task<Response<List<PacientesRecurrentes>>> GetPacientesMasRecurrentes(int medicoID, int rolID)
+        {
+            try
+            {
+                var parameters = new { MedicoID = medicoID, RolID = rolID };
+                var result = await _context.Database.GetDbConnection().QueryAsync<PacientesRecurrentes>(
+                    "spGetPacientesMasRecurrentes", parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+                return new Response<List<PacientesRecurrentes>>(result.ToList());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error: " + ex.Message, ex);
+            }
+        }
+
     }
+}
+
+public class PacienteNombre
+{
+    public int ID_Paciente { get; set; }
+
+    public string Nombre { get; set; }
+    public string Apellido { get; set; }
+    public string Sexo { get; set; }
+    public int Edad { get; set; }
+
+    public decimal Peso { get; set; }
+
+    public decimal Estatura { get; set; }
+    public string Telefono { get; set; }
+    public string Domicilio { get; set; }
+    public string Correo { get; set; }
+
+    public string NombreMedico { get; set; }
+
+}
+
+
+public class PacientesRecurrentes
+{
+    public int ID_Paciente { get; set; }
+
+    public string NombrePaciente { get; set; }
+    public int NumeroDeCitas { get; set; }
+
 }
