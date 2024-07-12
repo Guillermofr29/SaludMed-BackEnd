@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Domain.Entities
 {
@@ -12,7 +13,7 @@ namespace Domain.Entities
 
 
         //Esto va pasar si la respuesta es un exito
-        public Response(T data, string message = null) { 
+        public Response(T data, string message = null) {
             Success = true;
             Message = message;
             Result = data;

@@ -15,14 +15,12 @@ namespace API92.Services
             _context = context;
         }
 
-        public async Task<Response<List<Medicos>>> GetMedicos(int RolID)
+        public async Task<Response<List<Medicos>>> GetMedicos()
         {
             try
             {
-                var parameters = new { RolID = RolID };
                 List<Medicos> response = (await _context.Database.GetDbConnection().QueryAsync<Medicos>(
                     "spGetALLMedicos",
-                    parameters,
                     commandType: CommandType.StoredProcedure)).ToList();
 
                 return new Response<List<Medicos>>(response);

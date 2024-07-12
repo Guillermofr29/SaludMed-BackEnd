@@ -25,6 +25,7 @@ namespace Domain.Entities
         public string Domicilio { get; set; }
         public string Correo { get; set; }
 
+        public string? NombreMedico { get; set; }
         public int MedicoID { get; set; }
 
     }

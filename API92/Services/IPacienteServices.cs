@@ -6,7 +6,7 @@ namespace API92.Services
 {
     public interface IPacienteServices
     {
-        public Task<Response<List<Pacientes>>> GetPacientes(int medicoID);
+        public Task<Response<List<Pacientes>>> GetPacientes();
         public Task<Response<List<PacientesRecurrentes>>> GetPacientesMasRecurrentes(int medicoID, int rolID);
 
         public Task<Response<Pacientes>> CrearPaciente(Pacientes i);

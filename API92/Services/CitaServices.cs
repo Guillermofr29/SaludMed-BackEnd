@@ -4,6 +4,10 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
+
 
 namespace API92.Services
 {
@@ -15,6 +19,7 @@ namespace API92.Services
         {
             _context = context;
         }
+
         public async Task<Response<List<AllCitas>>> GetCitas(int medicoID)
         {
             try
@@ -30,7 +35,37 @@ namespace API92.Services
 
         }
 
+        public async Task<Response<List<AllCitas>>> GetCitasPorIdPaciente(int pacienteID)
+        {
+            try
+            {
+                var parameters = new { PacienteID = pacienteID };
+                var result = await _context.Database.GetDbConnection().QueryAsync<AllCitas>("spGetCitaPorIDPaciente", parameters, commandType: CommandType.StoredProcedure);
+                return new Response<List<AllCitas>>(result.ToList());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error: " + ex.Message);
+            }
+        }
 
+        public async Task<Response<TraerCitaID>> GetCitaPorID(int id)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("ID_Cita", id, DbType.Int32);
+
+                TraerCitaID result = (await _context.Database.GetDbConnection().QueryAsync<TraerCitaID>(
+                    "spGetCitaPorID", parameters, commandType: CommandType.StoredProcedure)).FirstOrDefault();
+
+                return new Response<TraerCitaID>(result);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el paciente por ID: " + ex.Message, ex);
+            }
+        }
 
         public async Task<Response<Citas>> CrearCitas(Citas i)
         {
@@ -173,25 +208,6 @@ namespace API92.Services
                 throw new Exception("Sucedio un error: " + ex.Message, ex);
             }
         }
-
-        public async Task<Response<TraerCitaID>> GetCitaPorID(int id)
-        {
-            try
-            {
-                var parameters = new DynamicParameters();
-                parameters.Add("ID_Cita", id, DbType.Int32);
-
-                TraerCitaID result = (await _context.Database.GetDbConnection().QueryAsync<TraerCitaID>(
-                    "spGetCitaPorID", parameters, commandType: CommandType.StoredProcedure)).FirstOrDefault();
-
-                return new Response<TraerCitaID>(result);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al obtener el paciente por ID: " + ex.Message, ex);
-            }
-        }
-
     }
 }
 
@@ -215,6 +231,9 @@ public class AllCitas
     public int PacienteID { get; set; }
 
     public int MedicoID { get; set; }
+    public string Telefono { get; set; }
+
+    public string Correo { get; set; }
 
     public string NombrePaciente { get; set; }
 
@@ -265,9 +284,16 @@ public class TraerCitaID
     [Key]
     public int ID_Cita { get; set; }
 
+    public int MedicoID { get; set; }
+
+    public int PacienteID { get; set; }
     public string NombrePaciente { get; set; }
 
     public string NombreMedico { get; set; }
+
+    public string Telefono { get; set; }
+
+    public string Correo { get; set; }
 
     public string Fecha { get; set; }
 

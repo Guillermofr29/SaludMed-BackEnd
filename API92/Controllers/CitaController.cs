@@ -1,6 +1,9 @@
 ﻿using API92.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 
 namespace API92.Controllers
 {
@@ -9,18 +12,48 @@ namespace API92.Controllers
     public class CitaController : ControllerBase
     {
         private readonly ICitaServices _citasServices;
+
         public CitaController(ICitaServices citaServices)
         {
 
             _citasServices = citaServices;
         }
 
-        [HttpGet]
+        [HttpGet("medico/{medicoID}")]
         public async Task<IActionResult> GetCitas(int medicoID)
         {
             try
             {
                 var result = await _citasServices.GetCitas(medicoID);
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{idCita}")]
+        public async Task<IActionResult> GetCitaPorID(int idCita)
+        {
+            try
+            {
+                var result = await _citasServices.GetCitaPorID(idCita);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener la cita por ID: " + ex.Message);
+            }
+        }
+
+        [HttpGet("paciente/{pacienteID}")]
+        public async Task<IActionResult> GetCitasPorIdPaciente(int pacienteID)
+        {
+            try
+            {
+                var result = await _citasServices.GetCitasPorIdPaciente(pacienteID);
                 return Ok(result);
 
             }
@@ -157,20 +190,5 @@ namespace API92.Controllers
                 return BadRequest("Error al obtener los motivos de consulta más comunes: " + ex.Message);
             }
         }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCitaPorID(int id)
-        {
-            try
-            {
-                var result = await _citasServices.GetCitaPorID(id);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Error al obtener la cita por ID: " + ex.Message);
-            }
-        }
-
     }
 }

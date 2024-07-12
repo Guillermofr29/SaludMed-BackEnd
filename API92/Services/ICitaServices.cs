@@ -8,6 +8,12 @@ namespace API92.Services
     {
         public Task<Response<List<AllCitas>>> GetCitas(int medicoID);
 
+        public Task<Response<List<AllCitas>>> GetCitasPorIdPaciente(int pacienteID);
+
+        public Task<Response<TraerCitaID>> GetCitaPorID(int id);
+
+        //public Task<Response<AllCitas>> GetCitasPorIdPaciente(int pacienteID);
+
         public Task<Response<Citas>> CrearCitas(Citas i);
 
         public Task<Response<Citas>> EditarCitas(Citas i);
@@ -26,7 +32,6 @@ namespace API92.Services
 
         public Task<Response<List<ProximasCitas>>> GetProximasCitas(int medicoID, int rolID);
 
-        public Task<Response<TraerCitaID>> GetCitaPorID(int id);
     }
 }
 

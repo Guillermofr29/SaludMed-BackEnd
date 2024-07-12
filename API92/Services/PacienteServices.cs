@@ -20,14 +20,13 @@ namespace API92.Services
             _context = context;
         }
 
-        public async Task<Response<List<Pacientes>>> GetPacientes(int medicoID)
+        public async Task<Response<List<Pacientes>>> GetPacientes()
         {
             try
             {
-                var parameters = new { MedicoID = medicoID };
+                //var parameters = new { MedicoID = medicoID };
                 List<Pacientes> response = (await _context.Database.GetDbConnection().QueryAsync<Pacientes>(
                     "spGetAllPacientes",
-                    parameters,
                     commandType: CommandType.StoredProcedure)).ToList();
 
                 return new Response<List<Pacientes>>(response);
@@ -180,6 +179,8 @@ public class PacienteNombre
     public string Correo { get; set; }
 
     public string NombreMedico { get; set; }
+
+    public int medicoID { get; set; }
 
 }
 

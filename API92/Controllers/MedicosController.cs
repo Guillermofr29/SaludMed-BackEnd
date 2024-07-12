@@ -16,11 +16,11 @@ namespace API92.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMedicos(int RolID)
+        public async Task<IActionResult> GetMedicos()
         {
             try
             {
-                var result = await _medicoServices.GetMedicos(RolID);
+                var result = await _medicoServices.GetMedicos();
                 return Ok(result);
             }
             catch (Exception ex)
