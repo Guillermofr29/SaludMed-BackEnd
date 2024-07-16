@@ -14,6 +14,9 @@ namespace Domain.Entities
         public string Diagnostico { get; set; }
         public string FechaInicio { get; set; }
         public string FechaFin { get; set; }
+        public string Recomendaciones { get; set; }
+
+        public string? NombrePaciente { get; set; }
         public List<RecetaMedicamento> Medicamentos { get; set; }
     }
 

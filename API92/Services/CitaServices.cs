@@ -291,6 +291,14 @@ public class TraerCitaID
 
     public string NombreMedico { get; set; }
 
+    public string Sexo { get; set; }
+
+    public int Edad { get; set; }
+
+    public decimal Peso { get; set; }
+
+    public decimal Estatura { get; set; }
+
     public string Telefono { get; set; }
 
     public string Correo { get; set; }

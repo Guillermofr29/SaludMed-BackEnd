@@ -28,5 +28,33 @@ namespace API92.Controllers
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+
+        [HttpGet("Recetas")]
+        public async Task<IActionResult> GetResetas(int medicoID, int rolID)
+        {
+            try
+            {
+                var result = await _recetaService.GetRecetas(medicoID, rolID);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener las recetas: " + ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarRecta(int id)
+        {
+            try
+            {
+                var result = await _recetaService.EliminarReceta(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

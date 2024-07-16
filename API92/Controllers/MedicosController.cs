@@ -25,7 +25,21 @@ namespace API92.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Error al obtener los pacientes: " + ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{ID_Cita}")]
+        public async Task<IActionResult> GetMedico(int ID_Cita)
+        {
+            try
+            {
+                var result = await _medicoServices.GetMedico(ID_Cita);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener al médico por  CitaID: " + ex.Message);
             }
         }
     }
