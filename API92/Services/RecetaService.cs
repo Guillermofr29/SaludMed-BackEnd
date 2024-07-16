@@ -36,6 +36,7 @@ namespace API92.Services
                     command.Parameters.AddWithValue("@Diagnostico", receta.Diagnostico);
                     command.Parameters.AddWithValue("@FechaInicio", receta.FechaInicio);
                     command.Parameters.AddWithValue("@FechaFin", receta.FechaFin);
+                    command.Parameters.AddWithValue("@Recomendaciones", receta.Recomendaciones);
 
                     var medicamentosParam = new SqlParameter("@Medicamentos", SqlDbType.Structured);
                     medicamentosParam.TypeName = "dbo.MedicamentoTableType";
@@ -68,5 +69,56 @@ namespace API92.Services
 
             return dt;
         }
+
+        public async Task<Response<List<Receta>>> GetRecetas(int medicoID, int rolID)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    var parameters = new { MedicoID = medicoID, Rol = rolID };
+                    var result = await connection.QueryAsync<Receta>(
+                        "ObtenerRecetasPorMedicoYRol",
+                        parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    return new Response<List<Receta>>(result.ToList());
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedió un error: " + ex.Message, ex);
+            }
+        }
+
+        public async Task<Response<Receta>> EliminarReceta(int id)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@ID_Receta", id, DbType.Int32);
+
+                    var result = await connection.QueryFirstOrDefaultAsync<Receta>(
+                        "spDeleteReceta",
+                        parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    return new Response<Receta>(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedió un error: " + ex.Message, ex);
+            }
+        }
+
     }
 }
