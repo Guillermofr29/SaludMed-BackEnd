@@ -25,6 +25,7 @@ namespace Domain.Entities
         public int ID_RecetaMed { get; set; }
         public int RecetaID { get; set; }
         public int MedicamentoID { get; set; }
+        public int PacienteID { get; set; }
         public string Dosis { get; set; }
         public string Cantidad { get; set; }
         public string Frecuencia { get; set; }

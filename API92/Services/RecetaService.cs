@@ -61,6 +61,7 @@ namespace API92.Services
             dt.Columns.Add("Dosis", typeof(string));
             dt.Columns.Add("Cantidad", typeof(string));
             dt.Columns.Add("Frecuencia", typeof(string));
+            dt.Columns.Add("PacienteID", typeof(int));
 
             foreach (var med in medicamentos)
             {
